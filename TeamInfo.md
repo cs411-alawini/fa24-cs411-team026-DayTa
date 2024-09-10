@@ -6,8 +6,8 @@
 | ----------- | ---------------------- |
 | TeamID      |        Team-026        |
 | TeamName    |         DayTa          |
-| Captain     |                        |
-| Captain     |                        |
+| Captain     |         Benhao Lu               |
+| Captain     |         benhaol2@illinois.edu               |
 | Member1     |           Benhao Lu             |
 | Member1     |           benhaol2@illinois.edu             |
 | Member2     |                Zijin Zhou        |
