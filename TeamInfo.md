@@ -27,4 +27,4 @@
 
 ## Project Summary
 
-This is a summary of the project!
+Our job matching platform is designed to connect job seekers with potential employers by aligning user profiles with relevant job postings. This web-based application facilitates comprehensive Create, Read, Update, and Delete (CRUD) operations, enabling users to efficiently match their profiles with job listings. Using React for frontend, Springboot for backend, python for additional machine learning model.
