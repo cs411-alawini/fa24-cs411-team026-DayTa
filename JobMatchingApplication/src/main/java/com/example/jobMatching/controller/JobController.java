@@ -1,4 +1,36 @@
 package com.example.jobMatching.controller;
 
+import com.example.jobMatching.entity.Job;
+import com.example.projectname.service.JobService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/jobs")
 public class JobController {
+
+    private final JobService jobService;
+
+    public JobController(JobService jobService) {
+        this.jobService = jobService;
+    }
+
+    // Create a new job
+    @PostMapping
+    public Job createJob(@RequestBody Job job) {
+        return jobService.createJob(job);
+    }
+
+    // Get all jobs
+    @GetMapping
+    public List<Job> getAllJobs() {
+        return jobService.getAllJobs();
+    }
+
+    // Get a job by ID
+    @GetMapping("/{jobId}")
+    public Job getJobById(@PathVariable Long jobId) {
+        return jobService.getJobById(jobId);
+    }
 }
