@@ -1,7 +1,7 @@
 package com.example.jobMatching.controller;
 
 import com.example.jobMatching.entity.Job;
-import com.example.projectname.service.JobService;
+import com.example.jobMatching.service.JobService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

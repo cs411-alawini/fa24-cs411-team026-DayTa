@@ -2,7 +2,7 @@ package com.example.jobMatching.service.impl;
 
 import com.example.jobMatching.entity.Job;
 import com.example.jobMatching.repository.JobRepository;
-import com.example.projectname.service.JobService;
+import com.example.jobMatching.service.JobService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

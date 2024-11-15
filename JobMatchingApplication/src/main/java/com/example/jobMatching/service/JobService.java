@@ -1,4 +1,4 @@
-package com.example.projectname.service;
+package com.example.jobMatching.service;
 
 import com.example.jobMatching.entity.Job;
 
