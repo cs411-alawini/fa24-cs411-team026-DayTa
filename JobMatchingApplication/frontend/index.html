@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Available Jobs</h1>
+        <!-- Search bar to filter jobs -->
+        <input type="text" id="search-bar" placeholder="Search for a job..." onkeyup="filterJobs()">
+        
+        <!-- Button to create a new job -->
+        <button onclick="openJobForm()">Add New Job</button>
+
+        <!-- Job list table -->
+        <table id="jobs-table">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="job-list">
+                <!-- Job entries will be populated here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Job form modal for adding/editing jobs -->
+    <div id="job-form-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeJobForm()">&times;</span>
+            <h2 id="modal-title">Add/Edit Job</h2>
+            <form id="job-form">
+                <label for="title">Job Title:</label>
+                <input type="text" id="title" name="title" required>
+                <label for="company">Company:</label>
+                <input type="text" id="company" name="company" required>
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required>
+                <button type="submit" id="submit-button">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
