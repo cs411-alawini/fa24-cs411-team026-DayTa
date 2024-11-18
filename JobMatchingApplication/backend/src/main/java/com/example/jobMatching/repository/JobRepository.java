@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
-    // Additional query methods (if any) can be defined here
-    
+    // Additional query methods if needed
 }

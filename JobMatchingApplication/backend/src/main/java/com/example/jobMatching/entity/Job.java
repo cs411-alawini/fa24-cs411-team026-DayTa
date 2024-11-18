@@ -31,10 +31,11 @@ public class Job {
     @Column(name = "skills_keyword", nullable = false, length = 500)
     private String skillsKeyWord;
 
-    // Constructor
+    // No-Args Constructor
     public Job() {
     }
 
+    // All-Args Constructor
     public Job(Long jobId, Long companyId, String title, String category, String location, Integer duration, String type, String skillsKeyWord) {
         this.jobId = jobId;
         this.companyId = companyId;
@@ -103,7 +104,7 @@ public class Job {
     public void setType(String type) {
         this.type = type;
     }
-
+    
     public String getSkillsKeyWord() {
         return skillsKeyWord;
     }
