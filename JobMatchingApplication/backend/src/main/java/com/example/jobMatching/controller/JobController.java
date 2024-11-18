@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/jobs")
+@RequestMapping("/api/jobs") // Changed from "/jobs" to "/api/jobs"
 public class JobController {
 
     private final JobService jobService;

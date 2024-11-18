@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class JobMatchingBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(JobMatchingBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(JobMatchingBackendApplication.class, args);
+    }
 
 }

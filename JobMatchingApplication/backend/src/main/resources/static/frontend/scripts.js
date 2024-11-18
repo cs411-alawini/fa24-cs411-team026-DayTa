@@ -1,10 +1,16 @@
 document.addEventListener("DOMContentLoaded", loadJobs);
 
 function loadJobs() {
-    // Call backend API to get job data (mocking API call for this example)
-    fetch("/api/jobs") // Update endpoint as needed
-        .then(response => response.json())
-        .then(data => displayJobs(data));
+    // Update the fetch URL to match the new API path
+    fetch("/api/jobs")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => displayJobs(data))
+        .catch(error => console.error('Error fetching jobs:', error));
 }
 
 function displayJobs(jobs) {
@@ -14,11 +20,11 @@ function displayJobs(jobs) {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${job.title}</td>
-            <td>${job.company}</td>
+            <td>${job.companyId}</td> <!-- Assuming 'company' is 'companyId' -->
             <td>${job.location}</td>
             <td>
-                <button onclick="editJob(${job.id})">Edit</button>
-                <button onclick="deleteJob(${job.id})">Delete</button>
+                <button onclick="editJob(${job.jobId})">Edit</button>
+                <button onclick="deleteJob(${job.jobId})">Delete</button>
             </td>
         `;
         jobList.appendChild(row);
@@ -58,12 +64,18 @@ function deleteJob(id) {
     }
 }
 
+
+
 document.getElementById("job-form").addEventListener("submit", event => {
     event.preventDefault();
     const jobData = {
+        companyId: parseInt(document.getElementById("companyId").value),
         title: document.getElementById("title").value,
-        company: document.getElementById("company").value,
+        category: document.getElementById("category").value,
         location: document.getElementById("location").value,
+        duration: parseInt(document.getElementById("duration").value),
+        type: document.getElementById("type").value,
+        skillsKeyWord: document.getElementById("skillsKeyWord").value
     };
 
     const method = jobData.id ? "PUT" : "POST";
@@ -73,8 +85,11 @@ document.getElementById("job-form").addEventListener("submit", event => {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(jobData)
-    }).then(() => {
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         closeJobForm();
         loadJobs();
-    });
+    }).catch(error => console.error('Error saving job:', error));
 });

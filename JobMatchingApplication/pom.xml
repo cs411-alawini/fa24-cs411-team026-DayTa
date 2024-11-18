@@ -5,12 +5,12 @@
 	                         https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Set packaging to 'pom' to denote an aggregator POM -->
-    <packaging>pom</packaging>
-
+    <!-- Define the groupId and version for the parent -->
     <groupId>com.example</groupId>
     <artifactId>JobMatchingApplication</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging> <!-- Set packaging to 'pom' -->
+
     <name>JobMatchingApplication</name>
     <description>Multi-module Spring Boot Application</description>
 
@@ -55,7 +55,7 @@
                         <target>${java.version}</target>
                     </configuration>
                 </plugin>
-                <!-- Add other managed plugins here -->
+                <!-- Add other managed plugins here if needed -->
             </plugins>
         </pluginManagement>
     </build>
