@@ -1,8 +1,10 @@
+// scripts.js
+
 document.addEventListener("DOMContentLoaded", loadJobs);
 
 function loadJobs() {
-    // Update the fetch URL to match the new API path
-    fetch("/api/jobs")
+    // Call backend API to get job data
+    fetch("/api/jobs") // Ensure this matches the updated API path
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -20,8 +22,12 @@ function displayJobs(jobs) {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${job.title}</td>
-            <td>${job.companyId}</td> <!-- Assuming 'company' is 'companyId' -->
+            <td>${job.companyId}</td>
+            <td>${job.category}</td>
             <td>${job.location}</td>
+            <td>${job.duration}</td>
+            <td>${job.type}</td>
+            <td>${job.skillsKeyWord}</td>
             <td>
                 <button onclick="editJob(${job.jobId})">Edit</button>
                 <button onclick="deleteJob(${job.jobId})">Delete</button>
@@ -44,12 +50,18 @@ function openJobForm(job = null) {
     document.getElementById("job-form-modal").style.display = "flex";
     if (job) {
         document.getElementById("modal-title").innerText = "Edit Job";
+        document.getElementById("companyId").value = job.companyId;
         document.getElementById("title").value = job.title;
-        document.getElementById("company").value = job.company;
+        document.getElementById("category").value = job.category;
         document.getElementById("location").value = job.location;
+        document.getElementById("duration").value = job.duration;
+        document.getElementById("type").value = job.type;
+        document.getElementById("skillsKeyWord").value = job.skillsKeyWord;
+        document.getElementById("job-form").dataset.jobId = job.jobId; // Store jobId for editing
     } else {
         document.getElementById("modal-title").innerText = "Add Job";
         document.getElementById("job-form").reset();
+        delete document.getElementById("job-form").dataset.jobId;
     }
 }
 
@@ -60,14 +72,20 @@ function closeJobForm() {
 function deleteJob(id) {
     if (confirm("Are you sure you want to delete this job?")) {
         fetch(`/api/jobs/${id}`, { method: "DELETE" })
-            .then(() => loadJobs());
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                loadJobs();
+            })
+            .catch(error => console.error('Error deleting job:', error));
     }
 }
 
-
-
 document.getElementById("job-form").addEventListener("submit", event => {
     event.preventDefault();
+    
+    const jobId = event.target.dataset.jobId; // Get jobId if editing
     const jobData = {
         companyId: parseInt(document.getElementById("companyId").value),
         title: document.getElementById("title").value,
@@ -78,18 +96,27 @@ document.getElementById("job-form").addEventListener("submit", event => {
         skillsKeyWord: document.getElementById("skillsKeyWord").value
     };
 
-    const method = jobData.id ? "PUT" : "POST";
-    const url = jobData.id ? `/api/jobs/${jobData.id}` : "/api/jobs";
+    let method = "POST";
+    let url = "/api/jobs";
+    if (jobId) {
+        method = "PUT";
+        url = `/api/jobs/${jobId}`;
+    }
 
     fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(jobData)
-    }).then(response => {
+    })
+    .then(response => {
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json().then(err => { throw new Error(err.message || 'Unknown error'); });
         }
         closeJobForm();
         loadJobs();
-    }).catch(error => console.error('Error saving job:', error));
+    })
+    .catch(error => {
+        console.error('Error saving job:', error);
+        alert(`Error: ${error.message}`);
+    });
 });

@@ -31,4 +31,20 @@ public class JobServiceImpl implements JobService {
         return jobRepository.findById(jobId)
                 .orElseThrow(() -> new RuntimeException("Job not found with id: " + jobId));
     }
+
+    @Override
+    public Job updateJob(Long jobId, Job jobDetails) {
+        Job existingJob = jobRepository.findById(jobId)
+                .orElseThrow(() -> new RuntimeException("Job not found with id: " + jobId));
+        
+        existingJob.setCompanyId(jobDetails.getCompanyId());
+        existingJob.setTitle(jobDetails.getTitle());
+        existingJob.setCategory(jobDetails.getCategory());
+        existingJob.setLocation(jobDetails.getLocation());
+        existingJob.setDuration(jobDetails.getDuration());
+        existingJob.setType(jobDetails.getType());
+        existingJob.setSkillsKeyWord(jobDetails.getSkillsKeyWord());
+        
+        return jobRepository.save(existingJob);
+    }
 }
