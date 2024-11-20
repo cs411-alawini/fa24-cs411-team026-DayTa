@@ -4,6 +4,10 @@ package com.example.jobMatching.service.impl;
 import com.example.jobMatching.entity.Job;
 import com.example.jobMatching.repository.JobRepository;
 import com.example.jobMatching.service.JobService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -11,6 +15,8 @@ import java.util.Optional;
 
 @Service
 public class JobServiceImpl implements JobService {
+
+    private static final Logger logger = LoggerFactory.getLogger(JobServiceImpl.class);
 
     // private final JobRepository jobRepository;
     @Autowired
@@ -43,9 +49,14 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job updateJob(Long id, Job jobDetails) {
-        Job existingJob = jobRepository.findById(id).orElse(null);
+        logger.debug("Updating job with ID: {}", id);
+        logger.debug("Job details: {}", jobDetails);
+
+        // Check if the job exists
+        Job existingJob = jobRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Job with ID " + id + " does not exist."));
         if (existingJob != null) {
-            // Update fields
+            // Update the job fields
             existingJob.setTitle(jobDetails.getTitle());
             existingJob.setCategory(jobDetails.getCategory());
             existingJob.setLocation(jobDetails.getLocation());
@@ -53,10 +64,11 @@ public class JobServiceImpl implements JobService {
             existingJob.setType(jobDetails.getType());
             existingJob.setSkillsKeyWord(jobDetails.getSkillsKeyWord());
             existingJob.setCompanyId(jobDetails.getCompanyId());
+            logger.debug("Existing job details updated: {}", existingJob);
             return jobRepository.save(existingJob);
         } else {
-            // Handle the case where the job doesn't exist
-            return null;
+            logger.error("Job with ID {} does not exist.", id);
+            throw new IllegalArgumentException("Job with ID " + id + " does not exist.");
         }
     }
 

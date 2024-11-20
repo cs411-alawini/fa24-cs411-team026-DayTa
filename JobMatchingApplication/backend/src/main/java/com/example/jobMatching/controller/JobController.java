@@ -35,7 +35,7 @@ public class JobController {
 
     // Get job by ID
     @GetMapping("/{id}")
-    public ResponseEntity<?> getJobById(@PathVariable Long id) {
+    public ResponseEntity<?> getJobById(@PathVariable("id") Long id) {
         try {
             Job job = jobService.getJobById(id);
             return new ResponseEntity<>(job, HttpStatus.OK);
@@ -71,12 +71,18 @@ public class JobController {
         }
     }
 
-    // Update an existing job
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateJob(@PathVariable Long id, @RequestBody Job jobDetails) {
+    public ResponseEntity<?> updateJob(@PathVariable("id") Long id, @RequestBody Job jobDetails) {
         try {
             Job updatedJob = jobService.updateJob(id, jobDetails);
-            return new ResponseEntity<>(updatedJob, HttpStatus.OK);
+            if (updatedJob != null) {
+                return new ResponseEntity<>(updatedJob, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Job not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (IllegalArgumentException e) {
+            logger.error("Job not found: {}", e.getMessage());
+            return new ResponseEntity<>("Job not found: " + e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Failed to update job: {}", e.getMessage());
             return new ResponseEntity<>("Failed to update job", HttpStatus.INTERNAL_SERVER_ERROR);

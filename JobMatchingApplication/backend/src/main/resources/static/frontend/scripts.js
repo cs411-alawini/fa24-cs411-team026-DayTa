@@ -54,6 +54,7 @@ function filterJobs() {
 }
 
 function openJobForm(job = null) {
+    console.debug("Job data for form:", job);
     const modal = document.getElementById("job-form-modal");
     modal.style.display = "flex";
     
