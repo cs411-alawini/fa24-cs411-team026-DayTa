@@ -85,11 +85,15 @@ public class JobController {
 
     // Delete a job
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteJob(@PathVariable Long id) {
+    public ResponseEntity<?> deleteJob(@PathVariable("id") Long id) {
         try {
             jobService.deleteJob(id);
+            logger.info("Successfully deleted job with ID: {}", id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            logger.error("Job not found: {}", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (RuntimeException e) {
             logger.error("Failed to delete job: {}", e.getMessage());
             return new ResponseEntity<>("Failed to delete job", HttpStatus.INTERNAL_SERVER_ERROR);
         }

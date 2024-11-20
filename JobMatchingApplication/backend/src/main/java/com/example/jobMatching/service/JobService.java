@@ -10,7 +10,7 @@ public interface JobService {
     Job getJobById(Long id) throws Exception;
     Job createJob(Job job);
     Job updateJob(Long id, Job jobDetails);
-    void deleteJob(Long id) throws Exception;
+    void deleteJob(Long id);
 
     // New method to get the maximum jobId
     Long getMaxJobId();

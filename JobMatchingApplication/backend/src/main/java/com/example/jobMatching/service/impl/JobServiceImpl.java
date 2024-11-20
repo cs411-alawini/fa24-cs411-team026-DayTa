@@ -61,10 +61,18 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void deleteJob(Long id) throws Exception {
-        Job job = getJobById(id);
-        jobRepository.delete(job);
+    public void deleteJob(Long id) {
+        if (!jobRepository.existsById(id)) {
+            throw new IllegalArgumentException("Job with ID " + id + " does not exist.");
+        }
+
+        try {
+            jobRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete job: " + e.getMessage());
+        }
     }
+
     @Override
     public Long getMaxJobId() {
         return jobRepository.findMaxJobId();

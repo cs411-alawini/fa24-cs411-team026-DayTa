@@ -1,3 +1,4 @@
+//Job.java
 package com.example.jobMatching.entity;
 
 import jakarta.persistence.*;
