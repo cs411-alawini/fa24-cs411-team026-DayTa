@@ -12,7 +12,9 @@ import java.util.Optional;
 @Service
 public class JobServiceImpl implements JobService {
 
-    private final JobRepository jobRepository;
+    // private final JobRepository jobRepository;
+    @Autowired
+    private JobRepository jobRepository;
 
     @Autowired
     public JobServiceImpl(JobRepository jobRepository) {
@@ -40,21 +42,31 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job updateJob(Long id, Job jobDetails) throws Exception {
-        Job job = getJobById(id);
-        job.setTitle(jobDetails.getTitle());
-        job.setCompanyId(jobDetails.getCompanyId());
-        job.setCategory(jobDetails.getCategory());
-        job.setLocation(jobDetails.getLocation());
-        job.setDuration(jobDetails.getDuration());
-        job.setType(jobDetails.getType());
-        job.setSkillsKeyWord(jobDetails.getSkillsKeyWord());
-        return jobRepository.save(job);
+    public Job updateJob(Long id, Job jobDetails) {
+        Job existingJob = jobRepository.findById(id).orElse(null);
+        if (existingJob != null) {
+            // Update fields
+            existingJob.setTitle(jobDetails.getTitle());
+            existingJob.setCategory(jobDetails.getCategory());
+            existingJob.setLocation(jobDetails.getLocation());
+            existingJob.setDuration(jobDetails.getDuration());
+            existingJob.setType(jobDetails.getType());
+            existingJob.setSkillsKeyWord(jobDetails.getSkillsKeyWord());
+            existingJob.setCompanyId(jobDetails.getCompanyId());
+            return jobRepository.save(existingJob);
+        } else {
+            // Handle the case where the job doesn't exist
+            return null;
+        }
     }
 
     @Override
     public void deleteJob(Long id) throws Exception {
         Job job = getJobById(id);
         jobRepository.delete(job);
+    }
+    @Override
+    public Long getMaxJobId() {
+        return jobRepository.findMaxJobId();
     }
 }

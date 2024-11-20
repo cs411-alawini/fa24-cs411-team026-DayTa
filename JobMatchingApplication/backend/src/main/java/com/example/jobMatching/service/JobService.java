@@ -5,9 +5,13 @@ import com.example.jobMatching.entity.Job;
 import java.util.List;
 
 public interface JobService {
+    // Existing methods
     List<Job> getAllJobs();
     Job getJobById(Long id) throws Exception;
     Job createJob(Job job);
-    Job updateJob(Long id, Job jobDetails) throws Exception;
+    Job updateJob(Long id, Job jobDetails);
     void deleteJob(Long id) throws Exception;
+
+    // New method to get the maximum jobId
+    Long getMaxJobId();
 }

@@ -6,8 +6,8 @@ import com.example.jobMatching.service.JobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -49,12 +49,25 @@ public class JobController {
     @PostMapping
     public ResponseEntity<?> createJob(@RequestBody Job job) {
         try {
+            // Generate a unique jobId
+            Long newJobId = generateUniqueJobId();
+            job.setJobId(newJobId);
+
             Job createdJob = jobService.createJob(job);
             logger.info("Job created with ID: {}", createdJob.getJobId());
             return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("Failed to create job: {}", e.getMessage());
             return new ResponseEntity<>("Failed to create job", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private Long generateUniqueJobId() {
+        Long maxJobId = jobService.getMaxJobId();
+        if (maxJobId == null) {
+            return 1L;
+        } else {
+            return maxJobId + 1;
         }
     }
 

@@ -28,7 +28,7 @@ public class Job {
     @Column(nullable = false)
     private String type;
 
-    @Column(name = "skills_keyword", nullable = false, length = 500)
+    @Column(nullable = false, length = 500)
     private String skillsKeyWord;
 
     // No-Args Constructor
