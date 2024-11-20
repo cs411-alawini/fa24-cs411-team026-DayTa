@@ -11,7 +11,12 @@
         <h1>Available Jobs</h1>
         
         <!-- Search bar to filter jobs -->
-        <input type="text" id="search-bar" placeholder="Search for a job..." onkeyup="filterJobs()">
+        <input
+            type="text"
+            id="search-bar"
+            placeholder="Search for jobs..."
+            onkeyup="performSearch(this.value)"
+        />
         
         <!-- Button to create a new job -->
         <button onclick="openJobForm()">Add New Job</button>

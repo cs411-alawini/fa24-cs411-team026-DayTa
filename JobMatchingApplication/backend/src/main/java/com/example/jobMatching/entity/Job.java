@@ -71,7 +71,7 @@ public class Job {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = title.toLowerCase();
     }
 
     public String getCategory() {
@@ -79,7 +79,7 @@ public class Job {
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        this.category = category.toLowerCase();
     }
 
     public String getLocation() {

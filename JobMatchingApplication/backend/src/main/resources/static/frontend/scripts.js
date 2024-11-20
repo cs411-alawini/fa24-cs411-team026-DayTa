@@ -13,6 +13,46 @@ function loadJobs() {
         .catch(error => console.error('Error fetching jobs:', error));
 }
 
+function performSearch(query) {
+    fetch(`/api/jobs/search?keyword=${encodeURIComponent(query)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(jobs => {
+            populateJobTable(jobs);
+        })
+        .catch(error => {
+            console.error('Error searching jobs:', error);
+            alert(`Error: ${error.message}`);
+        });
+}
+
+function populateJobTable(jobs) {
+    const tableBody = document.querySelector("#jobs-table tbody");
+    tableBody.innerHTML = ""; // Clear the current rows
+
+    jobs.forEach(job => {
+        const row = `
+            <tr>
+                <td>${job.jobId}</td>
+                <td>${job.title}</td>
+                <td>${job.category}</td>
+                <td>${job.location}</td>
+                <td>${job.type}</td>
+                <td>${job.skillsKeyWord}</td>
+                <td>
+                    <button onclick="editJob(${job.jobId})">Edit</button>
+                    <button onclick="deleteJob(${job.jobId})">Delete</button>
+                </td>
+            </tr>
+        `;
+        tableBody.innerHTML += row;
+    });
+}
+
 function displayJobs(jobs) {
     const jobList = document.getElementById("job-list");
     jobList.innerHTML = "";

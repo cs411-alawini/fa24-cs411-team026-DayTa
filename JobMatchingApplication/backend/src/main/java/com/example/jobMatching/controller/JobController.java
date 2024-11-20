@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/jobs")
@@ -102,6 +103,17 @@ public class JobController {
         } catch (RuntimeException e) {
             logger.error("Failed to delete job: {}", e.getMessage());
             return new ResponseEntity<>("Failed to delete job", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchJobs(@RequestParam("keyword") String keyword) {
+        try {
+            List<Job> jobs = jobService.searchJobs(keyword);
+            return new ResponseEntity<>(jobs, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Failed to search jobs: {}", e.getMessage());
+            return new ResponseEntity<>("Failed to search jobs", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

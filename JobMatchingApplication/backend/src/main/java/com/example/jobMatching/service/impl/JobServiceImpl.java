@@ -89,4 +89,10 @@ public class JobServiceImpl implements JobService {
     public Long getMaxJobId() {
         return jobRepository.findMaxJobId();
     }
+
+    @Override
+    public List<Job> searchJobs(String keyword) {
+        logger.debug("Searching for jobs with keyword: {}", keyword);
+        return jobRepository.searchJobsByKeyword(keyword.toLowerCase());
+    }
 }
