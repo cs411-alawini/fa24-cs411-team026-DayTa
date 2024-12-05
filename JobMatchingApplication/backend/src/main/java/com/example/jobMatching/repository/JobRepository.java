@@ -10,10 +10,22 @@ import java.util.List;
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
     
-    //search bar
-    @Query("SELECT j FROM Job j WHERE " +
-       "j.title LIKE CONCAT('%', :keyword, '%') OR " +
-       "j.category LIKE CONCAT('%', :keyword, '%')")
+    // Call the stored procedure
+    // DELIMITER 
+    //
+    // CREATE PROCEDURE SearchJobsByKeyword(
+    //     IN keyword VARCHAR(255)
+    // )
+    // BEGIN
+    //     SELECT * 
+    //     FROM job 
+    //     WHERE LOWER(title) LIKE CONCAT('%', keyword, '%') 
+    //        OR LOWER(category) LIKE CONCAT('%', keyword, '%');
+    // END 
+    //
+    // DELIMITER ;
+
+    @Query(value = "CALL SearchJobsByKeyword(:keyword)", nativeQuery = true)
     List<Job> searchJobsByKeyword(@Param("keyword") String keyword);
     
     //create job id

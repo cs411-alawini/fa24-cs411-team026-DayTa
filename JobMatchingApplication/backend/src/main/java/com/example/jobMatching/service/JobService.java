@@ -16,5 +16,5 @@ public interface JobService {
     Long getMaxJobId();
 
     // method for searching jobs
-    List<Job> searchJobs(String keyword);
+    List<Job> searchJobs(String keyword); 
 }
