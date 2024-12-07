@@ -12,3 +12,28 @@ Please make sure you keep your project root files up-to-date. Information for ea
 
 ## Code Contribution
 Individual code contributions will be used to evaluate individual contributions to the project.
+
+## Store Procedure
+DELIMITER //
+
+CREATE PROCEDURE `SearchJobsByKeyword`(
+    IN keyword VARCHAR(255),
+    IN remoteOnly TINYINT
+)
+BEGIN
+    IF remoteOnly = 1 THEN
+        SELECT * 
+        FROM job 
+        WHERE (LOWER(title) LIKE CONCAT('%', keyword, '%') 
+               OR LOWER(category) LIKE CONCAT('%', keyword, '%'))
+          AND LOWER(type) = 'remote';
+    ELSE
+        SELECT * 
+        FROM job 
+        WHERE LOWER(title) LIKE CONCAT('%', keyword, '%') 
+           OR LOWER(category) LIKE CONCAT('%', keyword, '%');
+    END IF;
+END //
+
+DELIMITER ;
+
