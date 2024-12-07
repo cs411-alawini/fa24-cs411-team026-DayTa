@@ -17,6 +17,10 @@
             placeholder="Search for jobs..."
             onkeyup="performSearch(this.value)"
         />
+        <label>
+            <input type="checkbox" id="remote-only-checkbox" onchange="performSearch()" />
+            Remote Only
+        </label>
         
         <!-- Button to create a new job -->
         <button onclick="openJobForm()">Add New Job</button>

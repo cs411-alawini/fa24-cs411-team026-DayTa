@@ -27,7 +27,10 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     @Query(value = "CALL SearchJobsByKeyword(:keyword)", nativeQuery = true)
     List<Job> searchJobsByKeyword(@Param("keyword") String keyword);
-    
+
+    @Query(value = "CALL SearchJobsByKeywordRemote(:keyword)", nativeQuery = true)
+    List<Job> searchJobsByKeywordAndType(@Param("keyword") String keyword);
+
     //create job id
     @Query("SELECT MAX(j.jobId) FROM Job j")
     Long findMaxJobId();

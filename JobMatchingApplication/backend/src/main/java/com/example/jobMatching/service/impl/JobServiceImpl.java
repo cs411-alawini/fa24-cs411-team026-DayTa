@@ -95,4 +95,11 @@ public class JobServiceImpl implements JobService {
         logger.debug("Searching for jobs with keyword: {}", keyword);
         return jobRepository.searchJobsByKeyword(keyword.toLowerCase());
     }
+
+    @Override
+    public List<Job> searchRemoteJobs(String keyword) {
+        logger.debug("Searching for remote-only jobs with keyword: {}", keyword);
+        return jobRepository.searchJobsByKeywordAndType(keyword.toLowerCase());
+    }
+
 }

@@ -12,7 +12,7 @@ function loadJobs() {
         .then(data => displayJobs(data))
         .catch(error => console.error('Error fetching jobs:', error));
 }
-
+/*
 function performSearch(query) {
     fetch(`/api/jobs/search?keyword=${encodeURIComponent(query)}`)
         .then(response => {
@@ -28,7 +28,35 @@ function performSearch(query) {
             console.error('Error searching jobs:', error);
             alert(`Error: ${error.message}`);
         });
+}*/
+
+function performSearch() {
+    const query = document.getElementById("search-bar").value;
+    const remoteOnly = document.getElementById("remote-only-checkbox").checked;
+
+    let url = `/api/jobs/search?keyword=${encodeURIComponent(query)}`;
+    if (remoteOnly) {
+        url += `&remoteOnly=true`;
+    }
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(jobs => {
+            populateJobTable(jobs);
+        })
+        .catch(error => {
+            console.error('Error searching jobs:', error);
+            alert(`Error: ${error.message}`);
+        });
 }
+
+
+
 
 function populateJobTable(jobs) {
     const tableBody = document.querySelector("#jobs-table tbody");

@@ -17,4 +17,5 @@ public interface JobService {
 
     // method for searching jobs
     List<Job> searchJobs(String keyword); 
+    List<Job> searchRemoteJobs(String keyword);
 }
