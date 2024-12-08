@@ -37,6 +37,8 @@ function performSearch() {
     let url = `/api/jobs/search?keyword=${encodeURIComponent(query)}`;
     if (remoteOnly) {
         url += `&remoteOnly=true`;
+    }else{
+        url += `&remoteOnly=false`;
     }
 
     fetch(url)
@@ -69,6 +71,7 @@ function populateJobTable(jobs) {
                 <td>${job.title}</td>
                 <td>${job.category}</td>
                 <td>${job.location}</td>
+                <td>${job.duration}</td>
                 <td>${job.type}</td>
                 <td>${job.skillsKeyWord}</td>
                 <td>

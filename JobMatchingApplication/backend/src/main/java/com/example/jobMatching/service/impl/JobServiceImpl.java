@@ -97,9 +97,19 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<Job> searchRemoteJobs(String keyword) {
+    public List<Job> searchRemoteJobs(String keyword, boolean remoteOnly) {
         logger.debug("Searching for remote-only jobs with keyword: {}", keyword);
-        return jobRepository.searchJobsByKeywordAndType(keyword.toLowerCase());
+        return jobRepository.searchJobsByKeywordAndType(keyword.toLowerCase(), remoteOnly);
     }
 
+    @Override
+    public void performJobTransaction(String title, String category, boolean remoteOnly) {
+        jobRepository.performJobTransaction(title, category, remoteOnly);
+    }
+
+    @Override
+    public Job addJob(Job job) {
+        // Save the job to the database; the trigger will handle additional logic
+        return jobRepository.save(job);
+    }
 }

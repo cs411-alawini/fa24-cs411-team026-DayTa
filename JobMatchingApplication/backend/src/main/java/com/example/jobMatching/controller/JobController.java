@@ -111,18 +111,13 @@ public class JobController {
                                         @RequestParam(value = "remoteOnly", required = false, defaultValue = "false") boolean remoteOnly) {
         try {
             List<Job> jobs;
-            if (remoteOnly) {
-                // Call the service function for remote-only jobs
-                jobs = jobService.searchRemoteJobs(keyword);
-            } else {
-                // Call the standard service function
-                jobs = jobService.searchJobs(keyword);
-            }
+            jobs = jobService.searchRemoteJobs(keyword, remoteOnly);
             return new ResponseEntity<>(jobs, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Failed to search jobs: {}", e.getMessage());
             return new ResponseEntity<>("Failed to search jobs", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     
 }

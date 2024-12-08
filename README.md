@@ -12,3 +12,20 @@ Please make sure you keep your project root files up-to-date. Information for ea
 
 ## Code Contribution
 Individual code contributions will be used to evaluate individual contributions to the project.
+
+## Trigger Sample
+
+DELIMITER //
+
+CREATE TRIGGER after_job_insert
+AFTER INSERT ON Job
+FOR EACH ROW
+BEGIN
+    IF LOWER(NEW.Type) = 'remote' AND NEW.Duration < 24 THEN
+        UPDATE Job
+        SET Duration = 24
+        WHERE JobId = NEW.JobId;
+    END IF;
+END //
+
+DELIMITER ;

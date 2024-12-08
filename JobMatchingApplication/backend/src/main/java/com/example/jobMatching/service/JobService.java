@@ -17,5 +17,10 @@ public interface JobService {
 
     // method for searching jobs
     List<Job> searchJobs(String keyword); 
-    List<Job> searchRemoteJobs(String keyword);
+    List<Job> searchRemoteJobs(String keyword, boolean remoteOnly);
+
+    //method for transaction 
+    void performJobTransaction(String title, String category, boolean remoteOnly);
+
+    public Job addJob(Job job);
 }
