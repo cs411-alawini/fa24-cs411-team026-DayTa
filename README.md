@@ -37,3 +37,25 @@ END //
 
 DELIMITER ;
 
+## Transaction
+CREATE PROCEDURE PerformJobTransaction(
+    IN title VARCHAR(255),
+    IN category VARCHAR(255),
+    IN remoteOnly BOOLEAN
+)
+BEGIN
+    -- Step 1: Insert a new job
+    INSERT INTO Job (CompanyId, Title, Category, Location, Duration, Type, SkillsKeyWord)
+    VALUES (1, title, category, 'Remote', 12, IF(remoteOnly, 'remote', 'hybrid'), 'Java, Spring Boot');
+
+    -- Step 2: Update an existing job
+    UPDATE Job
+    SET Duration = Duration + 6
+    WHERE JobId = 1;
+
+    -- Step 3: Log the transaction
+    INSERT INTO search_log (keyword, remote_only, result_count, timestamp)
+    VALUES (title, remoteOnly, 1, NOW());
+END
+
+
