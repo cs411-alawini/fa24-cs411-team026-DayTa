@@ -59,3 +59,18 @@ BEGIN
 END
 
 
+## Trigger
+DELIMITER //
+
+CREATE TRIGGER after_job_insert
+AFTER INSERT ON Job
+FOR EACH ROW
+BEGIN
+    IF LOWER(NEW.Type) = 'remote' AND NEW.Duration < 24 THEN
+        UPDATE Job
+        SET Duration = 24
+        WHERE JobId = NEW.JobId;
+    END IF;
+END //
+
+DELIMITER ;
