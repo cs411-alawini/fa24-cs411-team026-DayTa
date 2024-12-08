@@ -13,19 +13,49 @@ Please make sure you keep your project root files up-to-date. Information for ea
 ## Code Contribution
 Individual code contributions will be used to evaluate individual contributions to the project.
 
-## Trigger Sample
-
+## Store Procedure
 DELIMITER //
 
-CREATE TRIGGER after_job_insert
-AFTER INSERT ON Job
-FOR EACH ROW
+CREATE PROCEDURE `SearchJobsByKeyword`(
+    IN keyword VARCHAR(255),
+    IN remoteOnly TINYINT
+)
 BEGIN
-    IF LOWER(NEW.Type) = 'remote' AND NEW.Duration < 24 THEN
-        UPDATE Job
-        SET Duration = 24
-        WHERE JobId = NEW.JobId;
+    IF remoteOnly = 1 THEN
+        SELECT * 
+        FROM job 
+        WHERE (LOWER(title) LIKE CONCAT('%', keyword, '%') 
+               OR LOWER(category) LIKE CONCAT('%', keyword, '%'))
+          AND LOWER(type) = 'remote';
+    ELSE
+        SELECT * 
+        FROM job 
+        WHERE LOWER(title) LIKE CONCAT('%', keyword, '%') 
+           OR LOWER(category) LIKE CONCAT('%', keyword, '%');
     END IF;
 END //
 
 DELIMITER ;
+
+## Transaction
+CREATE PROCEDURE PerformJobTransaction(
+    IN title VARCHAR(255),
+    IN category VARCHAR(255),
+    IN remoteOnly BOOLEAN
+)
+BEGIN
+    //Step 1: Insert a new job
+    INSERT INTO Job (CompanyId, Title, Category, Location, Duration, Type, SkillsKeyWord)
+    VALUES (1, title, category, 'Remote', 12, IF(remoteOnly, 'remote', 'hybrid'), 'Java, Spring Boot');
+
+    //Step 2: Update an existing job
+    UPDATE Job
+    SET Duration = Duration + 6
+    WHERE JobId = 1;
+
+    // Step 3: Log the transaction
+    INSERT INTO search_log (keyword, remote_only, result_count, timestamp)
+    VALUES (title, remoteOnly, 1, NOW());
+END
+
+
